@@ -1,0 +1,46 @@
+/* Apply some background animation */
+@keyframes backgroundAnimation {
+    0% {
+      background-color: #ff7e5f;
+    }
+    50% {
+      background-color: #feb47b;
+    }
+    100% {
+      background-color: #ff7e5f;
+    }
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    animation: backgroundAnimation 10s infinite alternate;
+    text-align: center;
+    background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  }
+  
+  .title {
+    font-size: 3rem;
+    color: white;
+    animation: fadeIn 2s ease-out;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    color: white;
+    margin-top: 20px;
+    animation: fadeIn 3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
