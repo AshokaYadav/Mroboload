@@ -1,11 +1,10 @@
 'use client'
 import { useEffect } from "react";
 import styles from "./Home.module.css"
+import useAuthCheck from "@/hooks/useAuthCheck";
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    // Any animation or JS logic can go here if needed
-  }, []);
+  useAuthCheck();
 
   return (
     <div className={styles.container}>

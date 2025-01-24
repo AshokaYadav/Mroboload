@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputField from '@/components/Auth/InputField';
 import SubmitButton from '@/components/Auth/SubmitButton';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
 // import InputField from '../components/InputField'; // Import InputField
 // import SubmitButton from '../components/SubmitButton'; // Import SubmitButton
 
@@ -13,24 +14,34 @@ const Page = () => {
   const [mobileno, setMobileno] = useState('');
   const [password, setPassword] = useState('');
 
+  useAuthRedirect();
+
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     // Basic validation
     if (!mobileno || !password) {
       setError('mobileno and Password are required');
       return;
     }
-
+  
     try {
-      const response = await fetch('https://data-save-nraq.onrender.com/login', {
+      const response = await fetch('https://data-save-nraq.onrender.com/api/admin/login', {
         method: 'POST',
         body: JSON.stringify({ mobileno, password }),
         headers: { 'Content-Type': 'application/json' },
       });
-
+  
       if (!response.ok) throw new Error('Login failed');
-      
+  
+      const data = await response.json();
+  
+      // Store user data and token in localStorage
+      localStorage.setItem('user', JSON.stringify(data.signin));  // Save the user details
+      localStorage.setItem('token', data.token);  // Save the token
+  
+      console.log('Login successful:', data);
+  
       // Redirect to home page after successful login
       router.push('/');
     } catch (error) {
@@ -41,7 +52,7 @@ const Page = () => {
       }
     }
   };
-
+  
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">

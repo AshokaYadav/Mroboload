@@ -13,10 +13,20 @@ export default function Header() {
 
   // Handle logout and redirect to login page
   const handleLogout = () => {
-    // Here you can add your logout logic (e.g., clearing user session, tokens, etc.)
-    router.push("/login"); // Redirect to login page
+    // Clear user session and token from localStorage
+    localStorage.removeItem('token');  // Remove the token
+    localStorage.removeItem('user');   // Remove user data
+  
+    // Optionally, you can clear everything from localStorage
+    // localStorage.clear();
+  
+    // Redirect to login page
+    router.push("/login");
+  
+    // Toggle the visibility (if necessary)
     setLogoutVisible((prev) => !prev);
   };
+  
 
   return (
     <header className="bg-gray-900 text-white p-4 fixed top-0 left-64 right-0  flex justify-between items-center  ">

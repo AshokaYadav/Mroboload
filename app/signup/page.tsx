@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import RegistrationForm from "@/components/Auth/RegistrationForm";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 // import RegistrationForm from './RegistrationForm';
 
 const RegistrationPage = () => {
@@ -9,13 +10,15 @@ const RegistrationPage = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  useAuthRedirect();
+
   const handleFormSubmit = async (formData: { name: string; mobileno: string; password: string }) => {
     // Reset messages before starting submission
     setError("");
     setSuccessMessage("");
 
     try {
-      const response = await fetch("https://data-save-nraq.onrender.com/signup", {
+      const response = await fetch("https://data-save-nraq.onrender.com/api/admin/signup", {
         method: "POST",
         body: JSON.stringify({
           name: formData.name,
