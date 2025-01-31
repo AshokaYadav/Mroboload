@@ -1,11 +1,14 @@
 'use client'
+import FormComponent from '@/components/IdManageent/FormComponent';
 import useAuthCheck from '@/hooks/useAuthCheck'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const page = () => {
   useAuthCheck();
   return (
-    <div>this is nothing but Id Management page!</div>
+    <>
+    <FormComponent/>
+    </>
   )
 }
 

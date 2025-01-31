@@ -11,7 +11,7 @@ interface FormProps {
 const RegistrationForm: React.FC<FormProps> = ({ onSubmit, error, successMessage }) => {
   const [formData, setFormData] = useState({
     name: '',
-    mobileno: '',
+    mobileno: '',    
     password: '',
     confirmPassword: '',
   });
