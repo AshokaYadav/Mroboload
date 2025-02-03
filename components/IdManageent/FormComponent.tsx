@@ -12,7 +12,8 @@ const FormComponent = () => {
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [users, setUsers] = useState<any[]>([]); // Initialize as an empty array
   const [status, setStatus] = useState<string>('');
-  const [currentLoggedInd,setCurrentLoggedIn]=useState('')
+  const [currentLoggedInd,setCurrentLoggedIn]=useState<string>('');
+  const storedLoginData='';
 
   const fetchUsers = async () => {
     try {
@@ -33,6 +34,21 @@ const FormComponent = () => {
 
   // Fetch users from the API using GET request
   useEffect(() => {
+    
+    const storedLoginData = localStorage.getItem('loginData');
+  
+    // Check if the login data exists in localStorage
+    if (storedLoginData) {
+      try {
+        const parsedData = JSON.parse(storedLoginData);
+        setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
+      } catch (error) {
+        console.error('Error parsing login data:', error);
+      }
+    }
+
+
+
     fetchUsers(); // Call the function when the component mounts
   }, []);
 
@@ -119,6 +135,8 @@ const FormComponent = () => {
 
   const handleLoginClick = async (loginData: { loginId: string, password: string }) => {
     console.log(`Login clicked with loginId: ${loginData.loginId}`);
+
+    // setCurrentLoggedIn('Loading...')
   
     try {
       // Making the POST request to the API
@@ -136,16 +154,36 @@ const FormComponent = () => {
       
         // Store the login data (or token) in localStorage
         localStorage.setItem('loginData', JSON.stringify(data)); 
+
+        const storedLoginData = localStorage.getItem('loginData');
+  
+        // Check if the login data exists in localStorage
+        if (storedLoginData) {
+          try {
+            const parsedData = JSON.parse(storedLoginData);
+            setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
+          } catch (error) {
+            console.error('Error parsing login data:', error);
+          }
+        }
+        // setCurrentLoggedIn(loginData.loginId);
       } else {
         const errorData = await response.json();
         console.error('Login failed:', errorData);
         // Handle failure: show error message to the user
+        // setCurrentLoggedIn('Login')
       }
     } catch (error) {
       console.error('Request failed:', error);
       // Handle network or other errors
+      // setCurrentLoggedIn('Login')
     }
   };
+
+
+
+
+
   
   return (
     <div className="mx-auto p-4">
@@ -153,7 +191,7 @@ const FormComponent = () => {
       <div className="flex justify-end">
         <button
           onClick={() => setFormVisible(true)}
-          className="bg-blue-500 text-white px-6 py-2 rounded-full"
+          className="bg-blue-500 text-white px-6 py-1 rounded-full"
         >
           Create Login
         </button>
@@ -173,6 +211,7 @@ const FormComponent = () => {
         onStatusClick={handleUpdateStatus}
         onLoginClick={handleLoginClick}
         onDeleteClick={handleDeleteClick}
+        currentLoggedInd={currentLoggedInd}
       />
     </div>
   );
