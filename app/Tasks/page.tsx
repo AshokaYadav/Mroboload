@@ -103,7 +103,7 @@ const LapulistTable: React.FC = () => {
       const newState = !prevState;
       if (newState) {
         // Select all items
-        const allSelectedItems = lapulist.map(item => ({
+        const allSelectedItems = lapulist.filter(item => item.status !== "OFF") .map(item => ({
           lapu_id: item.lapu_id,
           amount,
           user_id: currentLoggedInd
@@ -122,13 +122,19 @@ const LapulistTable: React.FC = () => {
     // Adjust for 1-based index input
     const start = Math.max(0, rangeStart - 1); // Subtract 1 from the input
     const end = Math.max(0, rangeEnd - 1); // Subtract 1 from the input
-    const rangeSelectedItems = lapulist.slice(start, end + 1).map(item => ({
-      lapu_id: item.lapu_id,
-      amount,
-      user_id: currentLoggedInd
-    }));
+    
+    // Filter out items where status is "OFF"
+    const rangeSelectedItems = lapulist.slice(start, end + 1)
+      .filter(item => item.status !== "OFF") // Filter out items with status "OFF"
+      .map(item => ({
+        lapu_id: item.lapu_id,
+        amount,
+        user_id: currentLoggedInd
+      }));
+    
     setSelectedItems(rangeSelectedItems);
   };
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);

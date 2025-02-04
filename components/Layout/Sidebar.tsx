@@ -10,7 +10,7 @@ export default function Sidebar() {
       <SidebarLink href="/ID-Management">ID Management</SidebarLink>
       <SidebarLink href="/Tasks">Tasks</SidebarLink>
       <SidebarLink href="/Add-Instruments">Add Mobikwik</SidebarLink>
-      <SidebarLink href="/Details">Details</SidebarLink>
+      <SidebarLink href="/Details">Task History</SidebarLink>
       <SidebarLink href="/Control-Panel">Control Panel</SidebarLink>
       <SidebarLink href="/TransactionData">TransactionData</SidebarLink>
       <SidebarLink href="/Extra-Management">Extra Management</SidebarLink>

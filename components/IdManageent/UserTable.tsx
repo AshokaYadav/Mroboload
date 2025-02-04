@@ -77,12 +77,18 @@ const UserTable: React.FC<UserTableProps> = ({
                   {currentLoggedInd === user.loginId ? 'Logged' : 'Login'}
                 </button>
 
+                
                 <button
                   onClick={() => onDeleteClick(user.id)}
-                  className="bg-red-500 text-white px-4 py-1 rounded-full ml-2 w-24" // Add fixed width here too
+                  className={`px-4 py-1 rounded-full ml-2 w-24 text-white
+                    ${currentLoggedInd === user.loginId ? 'bg-red-500 cursor-not-allowed opacity-50' : 'bg-red-500'}`
+                  }
+                  disabled={currentLoggedInd !== user.loginId} // Disable the button if condition is met
                 >
                   Delete
                 </button>
+
+
               </td>
 
 

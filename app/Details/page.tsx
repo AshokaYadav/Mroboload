@@ -15,17 +15,20 @@ const TaskTable: React.FC = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([]); // Store fetched tasks
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [currentLoggedInd,setCurrentLoggedIn]=useState<string>('');
+  const [currentLoggedInd, setCurrentLoggedIn] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<string>(''); // State for the selected status filter
 
   // Fetch data from the API
-  const fetchTasks = async (id:string) => {
+  const fetchTasks = async (id: string, status: string) => {
     try {
       const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tasks');
       }
       const data = await response.json();
-      setTasks(data);
+      // Filter the tasks based on the selected status
+      const filteredTasks = status ? data.filter((task: TaskItem) => task.status === status) : data;
+      setTasks(filteredTasks);
       setLoading(false);
     } catch (err) {
       setError('Error: ' + err);
@@ -34,7 +37,6 @@ const TaskTable: React.FC = () => {
   };
 
   useEffect(() => {
-
     const storedLoginData = localStorage.getItem('loginData');
   
     // Check if the login data exists in localStorage
@@ -42,12 +44,16 @@ const TaskTable: React.FC = () => {
       try {
         const parsedData = JSON.parse(storedLoginData);
         setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
-        fetchTasks(parsedData.signin.loginId);
+        fetchTasks(parsedData.signin.loginId, selectedStatus); // Fetch tasks with the current selected status
       } catch (error) {
         console.error('Error parsing login data:', error);
       }
     }
-  }, []);
+  }, [selectedStatus]); // Run again when the selected status changes
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStatus(event.target.value);
+  };
 
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -62,6 +68,23 @@ const TaskTable: React.FC = () => {
       <h2 className="bg-gradient-to-r from-blue-500 to-teal-500 text-3xl font-bold mb-4 text-center text-white hover:text-blue-800 transition duration-300 transform">
         Detail List
       </h2>
+
+      {/* Dropdown for status filter */}
+      <div className="mb-4 flex justify-end mr-6">
+        <label htmlFor="statusFilter" className="mr-2 text-lg font-medium text-gray-700">
+          Status:
+        </label>
+        <select
+          id="statusFilter"
+          value={selectedStatus}
+          onChange={handleStatusChange}
+          className=" border border-gray-300 rounded-lg"
+        >
+          <option value="">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
 
       <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-md rounded-lg">
         <thead className="bg-gradient-to-r from-blue-500 to-teal-500 text-white">
@@ -96,7 +119,6 @@ const TaskTable: React.FC = () => {
             </tr>
           ))}
         </tbody>
-
       </table>
     </div>
   );
