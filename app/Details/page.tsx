@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 interface TaskItem {
-  id: number;
+  id: string;
   lapu_id: string;
   amount: string;
   user_id: string;
@@ -15,7 +15,7 @@ const TaskTable: React.FC = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([]); // Store fetched tasks
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [currentLoggedInd, setCurrentLoggedIn] = useState<string>('');
+  // const [currentLoggedInd, setCurrentLoggedIn] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<string>(''); // State for the selected status filter
 
   // Fetch data from the API
@@ -43,7 +43,7 @@ const TaskTable: React.FC = () => {
     if (storedLoginData) {
       try {
         const parsedData = JSON.parse(storedLoginData);
-        setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
+        // setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
         fetchTasks(parsedData.signin.loginId, selectedStatus); // Fetch tasks with the current selected status
       } catch (error) {
         console.error('Error parsing login data:', error);
@@ -55,6 +55,35 @@ const TaskTable: React.FC = () => {
     setSelectedStatus(event.target.value);
   };
 
+  const deleteTaskHandler = async (id: string) => {
+    try {
+      // Confirm before deleting
+      const confirmDelete = window.confirm("Are you sure you want to delete this task?");
+      if (!confirmDelete) return;
+  
+      // Make the DELETE request to the API
+      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks/${id}`, {
+        method: 'DELETE',
+      });
+  
+      // Handle response
+      if (!response.ok) {
+        throw new Error("Failed to delete the task");
+      }
+  
+      // Optionally, you can do something after successful deletion, like updating the UI
+      alert(`Task with ID ${id} has been deleted successfully`);
+  
+      // Remove item from the local state or refetch data
+      // For example:
+      setTasks(prevTasks => prevTasks.filter(item => item.id !== id)); 
+  
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      alert('An error occurred while deleting the task');
+    }
+  };
+  
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
@@ -94,6 +123,7 @@ const TaskTable: React.FC = () => {
             <th className="py-3 px-6 text-center">Amount</th>
             <th className="py-3 px-6 text-center">User ID</th>
             <th className="py-3 px-6 text-center">Status</th>
+            <th className="py-3 px-6 text-center">Action</th>
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -115,6 +145,11 @@ const TaskTable: React.FC = () => {
                 >
                   {task.status}
                 </span>
+              </td>
+              <td className="py-3 px-6 text-center border-b">
+                <button onClick={()=>deleteTaskHandler(task.id)}
+                  className='p-2 m-2 bg-red-600 text-white rounded-lg shadow-lg'
+                  >Delete</button>
               </td>
             </tr>
           ))}

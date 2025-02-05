@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from "react";
+
 import styles from "./Home.module.css"
 import useAuthCheck from "@/hooks/useAuthCheck";
 

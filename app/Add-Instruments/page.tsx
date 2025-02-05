@@ -23,7 +23,8 @@ export default function Home() {
       const result: DataItem[] = await response.json();
       setData(result);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // console.error('Error fetching data:', error);
+      console.log('Error fetching data:', error);
     }
   }
 
@@ -58,7 +59,7 @@ export default function Home() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        await response.json();
         setShowModal(false);
         fetchData();
       } else {

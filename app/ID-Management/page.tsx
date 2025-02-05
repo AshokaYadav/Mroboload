@@ -1,9 +1,9 @@
 'use client'
 import FormComponent from '@/components/IdManageent/FormComponent';
 import useAuthCheck from '@/hooks/useAuthCheck'
-import React, { useEffect } from 'react'
+import React from 'react'
 
-const page = () => {
+const Page = () => {
   useAuthCheck();
   return (
     <>
@@ -12,4 +12,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

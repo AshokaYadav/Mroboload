@@ -10,6 +10,7 @@ interface LapulistItem {
   Lapu_No: string;
   createdAt: string;
   updatedAt: string;
+  totalBalance:string;
 }
 
 interface SelectedLaput {
@@ -28,8 +29,11 @@ const LapulistTable: React.FC = () => {
   const [selectAll, setSelectAll] = useState<boolean>(false); // Track if all are selected
   const [rangeStart, setRangeStart] = useState<number>(0);
   const [rangeEnd, setRangeEnd] = useState<number>(0);
+  const [totalBalance, setTotalBalance] = useState(0);
+  
 
   const postSelectedData = async () => {
+    
     try {
       const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks', {
         method: 'POST',
@@ -43,6 +47,7 @@ const LapulistTable: React.FC = () => {
         throw new Error('Failed to post selected data');
       }
       console.log('Data posted successfully');
+      alert('successfully submit');
     } catch (error) {
       console.error('Error posting data:', error);
       setError('Failed to post data');
@@ -57,12 +62,27 @@ const LapulistTable: React.FC = () => {
       }
       const data = await response.json();
       setLapulist(data);
+  
+      const sum = data.reduce((acc: number, item: LapulistItem) => {
+        // Remove '₹' and commas, then trim the string
+        const balanceValue = parseFloat(
+          item.balance.replace('₹', '').replace(/,/g, '').trim()
+        ); // Replace commas and trim any whitespace
+        console.log(balanceValue);
+        return acc + balanceValue;
+      }, 0);
+
+      const roundedSum = Math.round(sum * 100) / 100; // Multiplies by 100, rounds, and divides by 100
+      setTotalBalance(roundedSum);
+      // setTotalBalance(sum);
+  
       setLoading(false);
     } catch (err) {
       setError('Error: ' + err);
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     console.log(amount);
@@ -82,6 +102,11 @@ const LapulistTable: React.FC = () => {
     }
     fetchLapulist();
   }, []);
+
+
+
+
+
 
   const handleSelectChange = (lapu_id: string, amount: string, user_id: string) => {
     setSelectedItems((prevSelectedItems) => {
@@ -103,11 +128,13 @@ const LapulistTable: React.FC = () => {
       const newState = !prevState;
       if (newState) {
         // Select all items
-        const allSelectedItems = lapulist.filter(item => item.status !== "OFF") .map(item => ({
-          lapu_id: item.lapu_id,
-          amount,
-          user_id: currentLoggedInd
-        }));
+        const allSelectedItems = lapulist.filter(item => item.status !== "OFF")
+          .filter(item => Number(item.totalBalance) !== 5000) // Convert totalBalance to a number for comparison
+          .map(item => ({
+            lapu_id: item.lapu_id,
+            amount,
+            user_id: currentLoggedInd
+          }));
         setSelectedItems(allSelectedItems);
       } else {
         // Deselect all items
@@ -116,7 +143,7 @@ const LapulistTable: React.FC = () => {
       return newState;
     });
   };
-
+  
 
   const handleRangeChange = () => {
     // Adjust for 1-based index input
@@ -126,6 +153,7 @@ const LapulistTable: React.FC = () => {
     // Filter out items where status is "OFF"
     const rangeSelectedItems = lapulist.slice(start, end + 1)
       .filter(item => item.status !== "OFF") // Filter out items with status "OFF"
+      .filter(item => Number(item.totalBalance) !== 5000)
       .map(item => ({
         lapu_id: item.lapu_id,
         amount,
@@ -140,6 +168,11 @@ const LapulistTable: React.FC = () => {
     setAmount(e.target.value);
   };
 
+  // const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFilterDate(e.target.value);
+  // };
+
+
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
@@ -153,6 +186,9 @@ const LapulistTable: React.FC = () => {
       <p className="text-lg font-semibold text-gray-800 bg-gray-200 p-3 rounded-md shadow-md">
         Current Logged In: <span className="font-bold text-blue-500">{currentLoggedInd}</span>
       </p>
+      <p className="text-lg font-semibold text-gray-800 bg-gray-200 p-3 rounded-md shadow-md">
+        Current balance on your Id: Rs: <span className="font-bold text-blue-500">{totalBalance}</span>
+      </p>
 
       <h2 className="bg-gradient-to-r from-blue-500 to-teal-500 text-3xl font-bold mb-4 text-center text-white hover:text-blue-800 transition duration-300 transform">
         Lapu List
@@ -161,26 +197,25 @@ const LapulistTable: React.FC = () => {
       <div className="flex justify-between items-center p-4">
        
          {/* Select All Checkbox */}
-      <div className="flex justify-between p-4">
+      <div className="flex justify-between">
 
-    
         <input
           type="number"
           placeholder="Start Index"
           value={rangeStart}
           onChange={(e) => setRangeStart(Number(e.target.value))}
-          className="p-2 border border-gray-300 rounded-md"
+          className="p-2 border border-gray-300 rounded-md w-40"
         />
         <input
           type="number"
           placeholder="End Index"
           value={rangeEnd}
           onChange={(e) => setRangeEnd(Number(e.target.value))}
-          className="p-2 border border-gray-300 rounded-md ml-2"
+          className="p-2 border border-gray-300 rounded-md ml-2 w-40"
         />
         <button
           onClick={handleRangeChange}
-          className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 ml-4"
+          className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 ml-4 "
         >
           Select Range
         </button>
@@ -205,6 +240,15 @@ const LapulistTable: React.FC = () => {
 
 
       </div>
+      {/* <div className="flex flex-col items-start w-40 m-2 ">
+          <input
+            id="date-picker"
+            type="date"
+            // value={filterDate}
+            // onChange={handleDateChange}
+            className="p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300"
+          />
+  </div> */}
 
      
 
@@ -224,12 +268,13 @@ const LapulistTable: React.FC = () => {
             <th className="py-3 px-6 text-center">Lapu ID</th>
             <th className="py-3 px-6 text-center">Balance</th>
             <th className="py-3 px-6 text-center">User ID</th>
+            <th className="py-3 px-6 text-center">Total Balance</th>
             <th className="py-3 px-6 text-center">Status</th>
             <th className="py-3 px-6 text-center">Lapu No</th>
           </tr>
         </thead>
         <tbody className="bg-white">
-          {lapulist.map((item, index) => (
+          {lapulist.map((item) => (
             <tr key={item.id} className="hover:bg-gray-100 transition duration-200">
               <td className="py-3 px-6 text-center border-b">
                 <input
@@ -237,13 +282,14 @@ const LapulistTable: React.FC = () => {
                   checked={selectedItems.some(selectedItem => selectedItem.lapu_id === item.lapu_id)}
                   onChange={() => handleSelectChange(item.lapu_id, amount, currentLoggedInd)}
                   className="form-checkbox text-blue-500"
-                  disabled={item.status === 'OFF'}
+                  disabled={item.status === 'OFF' || item.totalBalance == '5000'}
                 />
               </td>
               <td className="py-3 px-6 text-center border-b">{item.id}</td>
               <td className="py-3 px-6 text-center border-b">{item.lapu_id}</td>
               <td className="py-3 px-6 text-center border-b">{item.balance}</td>
               <td className="py-3 px-6 text-center border-b">{item.user_id.slice(0, 10)}</td>
+              <td className="py-3 px-6 text-center border-b">{item.totalBalance}</td>
               <td className="py-3 px-6 text-center border-b">
                 <span
                   className={`px-3 py-1 rounded-full ${item.status === 'ON' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}

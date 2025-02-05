@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import InputField from '@/components/Auth/InputField';
 import SubmitButton from '@/components/Auth/SubmitButton';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
+import Link from 'next/link';
 // import InputField from '../components/InputField'; // Import InputField
 // import SubmitButton from '../components/SubmitButton'; // Import SubmitButton
 
@@ -85,8 +86,9 @@ const Page = () => {
         </form>
         
         <p className="mt-4 text-center">
-          Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up here</a>
-        </p>
+  Don&apos;t have an account? <Link href="/signup" className="text-blue-500 hover:underline">Sign up here</Link>
+</p>
+
       </div>
     </div>
   );
