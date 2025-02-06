@@ -22,7 +22,7 @@ const FormComponent = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user');
+      const response = await fetch('http://172.105.252.53/api/user');
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched users:', data);
@@ -52,7 +52,7 @@ const FormComponent = () => {
   // Handle form submission
   const handleFormSubmit = async (formData: FormData) => {
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user', {
+      const response = await fetch('http://172.105.252.53/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const FormComponent = () => {
   const handleDeleteClick = async (id: number) => {
     console.log(`Delete clicked for user with ID: ${id}`);
     try {
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
         method: 'DELETE',
       });
 
@@ -93,7 +93,7 @@ const FormComponent = () => {
     try {
       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
 
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ const FormComponent = () => {
     console.log(`Login clicked with loginId: ${loginData.loginId}`);
 
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/login/manual', {
+      const response = await fetch('http://172.105.252.53/api/user/login/manual', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -241,7 +241,7 @@ export default FormComponent;
 
 //   const fetchUsers = async () => {
 //     try {
-//       const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user');
+//       const response = await fetch('http://172.105.252.53/api/user');
 //       if (response.ok) {
 //         const data = await response.json();
 //         console.log('Fetched users:', data);
@@ -279,7 +279,7 @@ export default FormComponent;
 //   // Handle form submission
 //   const handleFormSubmit = async (formData: FormData) => {
 //     try {
-//       const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user', {
+//       const response = await fetch('http://172.105.252.53/api/user', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ export default FormComponent;
 //     console.log(`Delete clicked for user with ID: ${id}`);
 
 //     try {
-//       const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/${id}`, {
+//       const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
 //         method: 'DELETE',
 //       });
 
@@ -330,7 +330,7 @@ export default FormComponent;
 //     try {
 //       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
 
-//       const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/${id}`, {
+//       const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
 //         method: 'PUT',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -365,7 +365,7 @@ export default FormComponent;
   
 //     try {
 //       // Making the POST request to the API
-//       const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/user/login/manual', {
+//       const response = await fetch('http://172.105.252.53/api/user/login/manual', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',

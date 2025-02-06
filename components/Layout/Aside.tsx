@@ -8,11 +8,11 @@ export default function Aside() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         {/* Logo - You can replace the src with your own logo URL */}
-        <Image
+        {/* <Image
           src="https://dynamic.design.com/asset/logo/f0af4087-ffa7-453c-86f9-c192e14eb165/logo-search-grid-2x?logoTemplateVersion=1&v=638565286469030000" 
           alt="Logo"
           className="w-24 h-24 rounded-full border-8 border-gray-600"
-        />
+        /> */}
       </div>
 
       {/* Sidebar Links */}

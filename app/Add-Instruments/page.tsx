@@ -19,7 +19,7 @@ export default function Home() {
 
   async function fetchData() {
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/mobikwik');
+      const response = await fetch('http://172.105.252.53/api/mobikwik');
       const result: DataItem[] = await response.json();
       setData(result);
     } catch (error) {
@@ -50,7 +50,7 @@ export default function Home() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/mobikwik', {
+      const response = await fetch('http://172.105.252.53/api/mobikwik', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export default function Home() {
   const handleBalanceUpdate = async (id: number) => {
     const updatedBalance = editedBalances[id];
     try {
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/mobikwik/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/mobikwik/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default function Home() {
 
   const handleBalanceDelete = async (id: number) => {
     try {
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/mobikwik/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/mobikwik/${id}`, {
         method: 'DELETE',
       });
 

@@ -21,7 +21,7 @@ const LapuTable: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/lapulist/success');
+        const response = await fetch('http://172.105.252.53/api/lapulist/success');
         const result: LapuItem[] = await response.json();
         setData(result);
         setOriginalData(result);

@@ -21,7 +21,7 @@ const TaskTable: React.FC = () => {
   // Fetch data from the API
   const fetchTasks = async (id: string, status: string) => {
     try {
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks/${id}`);
+      const response = await fetch(`http://172.105.252.53/api/tasks/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tasks');
       }
@@ -62,7 +62,7 @@ const TaskTable: React.FC = () => {
       if (!confirmDelete) return;
   
       // Make the DELETE request to the API
-      const response = await fetch(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/tasks/${id}`, {
         method: 'DELETE',
       });
   

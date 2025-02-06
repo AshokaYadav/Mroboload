@@ -35,7 +35,7 @@ const LapulistTable: React.FC = () => {
   const postSelectedData = async () => {
     
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/tasks', {
+      const response = await fetch('http://172.105.252.53/api/tasks', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -56,7 +56,7 @@ const LapulistTable: React.FC = () => {
 
   const fetchLapulist = async () => {
     try {
-      const response = await fetch('https://plkzmn5x-3011.inc1.devtunnels.ms/api/lapulist');
+      const response = await fetch('http://172.105.252.53/api/lapulist');
       if (!response.ok) {
         throw new Error('Failed to fetch lapulist data');
       }
