@@ -98,7 +98,7 @@ const TaskTable: React.FC = () => {
       } else {
         // setStatus('Error deleting tasks');
       }
-    } catch (error) {
+    } catch {
       // setStatus('Error deleting tasks');
     } finally {
       setLoading(false);

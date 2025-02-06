@@ -19,8 +19,8 @@ const StartStopButton: React.FC = () => {
       } else {
         setStatus('Error starting');
       }
-    } catch (error) {
-      setStatus('Error starting');
+    } catch {
+      setStatus('Error starting'); // No need for `error` variable if not using it
     } finally {
       setLoading(false);
     }
@@ -36,17 +36,17 @@ const StartStopButton: React.FC = () => {
       if (response.ok) {
         setStatus('Stopped');
       } else {
-        setStatus('Alredy Stopped');
+        setStatus('Already Stopped');
       }
-    } catch (error) {
-      setStatus('Error stopping');
+    } catch {
+      setStatus('Error stopping'); // No need for `error` variable if not using it
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 border-2 border-gray-300  shadow-lg  mx-auto space-y-4">
+    <div className="flex flex-col items-center justify-center p-6 border-2 border-gray-300 shadow-lg mx-auto space-y-4">
       <h1 className="text-2xl font-bold mb-4">Control API</h1>
       <div className="flex space-x-4">
         <button
