@@ -15,7 +15,7 @@ const TaskTable: React.FC = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([]); // Store fetched tasks
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  // const [currentLoggedInd, setCurrentLoggedIn] = useState<string>('');
+  const [currentLoggedInd, setCurrentLoggedIn] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<string>(''); // State for the selected status filter
 
   // Fetch data from the API
@@ -43,7 +43,7 @@ const TaskTable: React.FC = () => {
     if (storedLoginData) {
       try {
         const parsedData = JSON.parse(storedLoginData);
-        // setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
+        setCurrentLoggedIn(parsedData.signin.loginId);  // Assuming 'signin' and 'loginId' exist in the parsed data
         fetchTasks(parsedData.signin.loginId, selectedStatus); // Fetch tasks with the current selected status
       } catch (error) {
         console.error('Error parsing login data:', error);
@@ -83,6 +83,27 @@ const TaskTable: React.FC = () => {
       alert('An error occurred while deleting the task');
     }
   };
+
+
+  const handleDeleteAll = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://172.105.252.53/api/task/truncate/${currentLoggedInd}`, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        // setStatus('Tasks Deleted');
+        alert('dhruv bhai ho gaya delete');
+        fetchTasks(currentLoggedInd, selectedStatus);
+      } else {
+        // setStatus('Error deleting tasks');
+      }
+    } catch (error) {
+      // setStatus('Error deleting tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
   
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -99,7 +120,17 @@ const TaskTable: React.FC = () => {
       </h2>
 
       {/* Dropdown for status filter */}
-      <div className="mb-4 flex justify-end mr-6">
+      <div className="mb-4 ml-4 flex justify-between mr-6">
+        <div>
+        <button
+          onClick={handleDeleteAll}
+          className="bg-red-600 text-white p-2 rounded-md hover:bg-red-500 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? 'Deleting...' : 'Delete All'}
+        </button>
+        </div>
+        <div>
         <label htmlFor="statusFilter" className="mr-2 text-lg font-medium text-gray-700">
           Status:
         </label>
@@ -113,6 +144,7 @@ const TaskTable: React.FC = () => {
           <option value="Pending">Pending</option>
           <option value="Completed">Completed</option>
         </select>
+        </div>
       </div>
 
       <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-md rounded-lg">

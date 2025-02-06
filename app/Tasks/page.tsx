@@ -56,7 +56,7 @@ const LapulistTable: React.FC = () => {
 
   const fetchLapulist = async () => {
     try {
-      const response = await fetch('http://172.105.252.53/api/lapulist');
+      const response = await fetch('http://172.105.252.53/api/lapu');
       if (!response.ok) {
         throw new Error('Failed to fetch lapulist data');
       }
@@ -171,6 +171,10 @@ const LapulistTable: React.FC = () => {
   // const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setFilterDate(e.target.value);
   // };
+
+
+
+  
 
 
   if (loading) {

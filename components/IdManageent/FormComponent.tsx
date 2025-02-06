@@ -22,7 +22,7 @@ const FormComponent = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://172.105.252.53/api/user');
+      const response = await fetch('http://172.105.252.53/api/get');
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched users:', data);
@@ -115,22 +115,61 @@ const FormComponent = () => {
     }
   };
 
+  // const handleLoginClick = async (loginData: { loginId: string, password: string }) => {
+  //   console.log(`Login clicked with loginId: ${loginData.loginId}`);
+
+  //   try {
+  //     const response = await fetch('http://172.105.252.53/api/user/login/manual', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(loginData), // Send loginData as the request body
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       localStorage.setItem('loginData', JSON.stringify(data));
+
+  //       const storedLoginData = localStorage.getItem('loginData');
+  //       if (storedLoginData) {
+  //         try {
+  //           const parsedData = JSON.parse(storedLoginData);
+  //           setCurrentLoggedIn(parsedData.signin.loginId);
+  //         } catch (error) {
+  //           console.error('Error parsing login data:', error);
+  //         }
+  //       }
+  //     } else {
+  //       console.error('Login failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Request failed:', error);
+  //   }
+  // };
+
+
   const handleLoginClick = async (loginData: { loginId: string, password: string }) => {
     console.log(`Login clicked with loginId: ${loginData.loginId}`);
 
     try {
-      const response = await fetch('http://172.105.252.53/api/user/login/manual', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData), // Send loginData as the request body
-      });
+      // Make both API calls concurrently using Promise.all()
+      const [loginResponse, stopResponse] = await Promise.all([
+        fetch('http://172.105.252.53/api/get/login/manual', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(loginData),
+        }),
+        fetch('http://172.105.252.53/stop', { method: 'GET' }),
+      ]);
 
-      if (response.ok) {
-        const data = await response.json();
+      if (loginResponse.ok) {
+        const data = await loginResponse.json();
         localStorage.setItem('loginData', JSON.stringify(data));
 
+        console.log('Login successful');
         const storedLoginData = localStorage.getItem('loginData');
         if (storedLoginData) {
           try {
@@ -143,10 +182,25 @@ const FormComponent = () => {
       } else {
         console.error('Login failed');
       }
+
+      if (stopResponse.ok) {
+        console.log('Stop API was called successfully');
+      } else {
+        // console.error('Failed to call the stop API');
+        alert('process did\'t stop...')
+      }
+
     } catch (error) {
       console.error('Request failed:', error);
     }
   };
+
+
+
+
+
+
+
 
   return (
     <div className="mx-auto p-4">
