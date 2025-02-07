@@ -93,7 +93,7 @@ const FormComponent = () => {
     try {
       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
 
-      const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
+      const response = await fetch(`http://172.105.252.53/api/get/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
