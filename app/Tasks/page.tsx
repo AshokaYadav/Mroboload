@@ -33,6 +33,18 @@ const LapulistTable: React.FC = () => {
   
 
   const postSelectedData = async () => {
+
+
+    if(!amount) alert('dhruv bhai enter first amount...');
+
+    
+
+    const updatedItems = selectedItems.map(item => {
+      return {
+          ...item, // Keep all other properties of the item
+          amount // Update the amount field
+      };
+  });
     
     try {
       const response = await fetch('http://172.105.252.53/api/tasks', {
@@ -40,7 +52,7 @@ const LapulistTable: React.FC = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ data: selectedItems })
+        body: JSON.stringify({ data: updatedItems })
       });
 
       if (!response.ok) {
