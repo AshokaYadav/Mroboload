@@ -91,6 +91,33 @@ export default function Home() {
     }
   };
 
+
+  const handleUpdateStatus = async (id: number, currentStatus: string) => {
+    try {
+      const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
+
+      const response = await fetch(`http://172.105.252.53/api/mobikwik/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }), // Payload only contains the status field
+      });
+
+      if (response.ok) {
+        setData((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === id ? { ...user, status: newStatus } : user
+          )
+        );
+      } else {
+        console.log('Error: Could not update status');
+      }
+    } catch (error) {
+      console.log('Error updating user status:', error);
+    }
+  };
+
   const handleBalanceDelete = async (id: number) => {
     try {
       const response = await fetch(`http://172.105.252.53/api/mobikwik/${id}`, {
@@ -148,15 +175,16 @@ export default function Home() {
                 </td>
 
                 <td className="px-4 py-2 border-b text-center">
-                  <span
-                    className={`px-3 py-1 rounded-full ${
-                      item.status === 'Active'
-                        ? 'bg-green-500 text-white'
-                        : 'bg-red-500 text-white'
-                    }`}
-                  >
-                    {item.status}
-                  </span>
+                <button
+                onClick={() => handleUpdateStatus(item.id, item.status)}
+                className={`text-white px-4 py-1 rounded-full ${
+                  item.status === 'Active'
+                    ? 'bg-green-500'  // Green for Active
+                    : 'bg-red-500'    // Red for Inactive
+                } w-24`}
+              >
+                {item.status}
+              </button>
                 </td>
 
                 <td className="px-4 py-1 border-b text-center">
