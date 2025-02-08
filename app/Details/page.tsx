@@ -21,7 +21,7 @@ const TaskTable: React.FC = () => {
   // Fetch data from the API
   const fetchTasks = async (id: string, status: string) => {
     try {
-      const response = await fetch(`http://172.105.252.53/api/tasks/${id}`);
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/tasks/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tasks');
       }
@@ -62,7 +62,7 @@ const TaskTable: React.FC = () => {
       if (!confirmDelete) return;
   
       // Make the DELETE request to the API
-      const response = await fetch(`http://172.105.252.53/api/tasks/${id}`, {
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/tasks/${id}`, {
         method: 'DELETE',
       });
   
@@ -88,7 +88,7 @@ const TaskTable: React.FC = () => {
   const handleDeleteAll = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://172.105.252.53/api/task/truncate/${currentLoggedInd}`, {
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/task/truncate/${currentLoggedInd}`, {
         method: 'GET',
       });
       if (response.ok) {

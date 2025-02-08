@@ -22,7 +22,7 @@ const FormComponent = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://172.105.252.53/api/get');
+      const response = await fetch('https://www.kashishindiapvtltd.com/api/get');
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched users:', data);
@@ -52,7 +52,7 @@ const FormComponent = () => {
   // Handle form submission
   const handleFormSubmit = async (formData: FormData) => {
     try {
-      const response = await fetch('http://172.105.252.53/api/user', {
+      const response = await fetch('https://www.kashishindiapvtltd.com/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const FormComponent = () => {
   const handleDeleteClick = async (id: number) => {
     console.log(`Delete clicked for user with ID: ${id}`);
     try {
-      const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/user/${id}`, {
         method: 'DELETE',
       });
 
@@ -93,7 +93,7 @@ const FormComponent = () => {
     try {
       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
 
-      const response = await fetch(`http://172.105.252.53/api/get/${id}`, {
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/get/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ const FormComponent = () => {
   //   console.log(`Login clicked with loginId: ${loginData.loginId}`);
 
   //   try {
-  //     const response = await fetch('http://172.105.252.53/api/user/login/manual', {
+  //     const response = await fetch('https://www.kashishindiapvtltd.com/api/user/login/manual', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -155,14 +155,14 @@ const FormComponent = () => {
     try {
       // Make both API calls concurrently using Promise.all()
       const [loginResponse, stopResponse] = await Promise.all([
-        fetch('http://172.105.252.53/api/get/login/manual', {
+        fetch('https://www.kashishindiapvtltd.com/api/get/login/manual', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(loginData),
         }),
-        fetch('http://172.105.252.53/stop', { method: 'GET' }),
+        fetch('https://www.kashishindiapvtltd.com/stop', { method: 'GET' }),
       ]);
 
       if (loginResponse.ok) {
@@ -295,7 +295,7 @@ export default FormComponent;
 
 //   const fetchUsers = async () => {
 //     try {
-//       const response = await fetch('http://172.105.252.53/api/user');
+//       const response = await fetch('https://www.kashishindiapvtltd.com/api/user');
 //       if (response.ok) {
 //         const data = await response.json();
 //         console.log('Fetched users:', data);
@@ -333,7 +333,7 @@ export default FormComponent;
 //   // Handle form submission
 //   const handleFormSubmit = async (formData: FormData) => {
 //     try {
-//       const response = await fetch('http://172.105.252.53/api/user', {
+//       const response = await fetch('https://www.kashishindiapvtltd.com/api/user', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -363,7 +363,7 @@ export default FormComponent;
 //     console.log(`Delete clicked for user with ID: ${id}`);
 
 //     try {
-//       const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
+//       const response = await fetch(`https://www.kashishindiapvtltd.com/api/user/${id}`, {
 //         method: 'DELETE',
 //       });
 
@@ -384,7 +384,7 @@ export default FormComponent;
 //     try {
 //       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'; // Toggle the status
 
-//       const response = await fetch(`http://172.105.252.53/api/user/${id}`, {
+//       const response = await fetch(`https://www.kashishindiapvtltd.com/api/user/${id}`, {
 //         method: 'PUT',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -419,7 +419,7 @@ export default FormComponent;
   
 //     try {
 //       // Making the POST request to the API
-//       const response = await fetch('http://172.105.252.53/api/user/login/manual', {
+//       const response = await fetch('https://www.kashishindiapvtltd.com/api/user/login/manual', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',

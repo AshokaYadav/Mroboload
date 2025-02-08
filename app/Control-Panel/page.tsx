@@ -11,7 +11,7 @@ const StartStopButton: React.FC = () => {
   const handleStart = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://172.105.252.53/start', {
+      const response = await fetch('https://www.kashishindiapvtltd.com/start', {
         method: 'GET',
       });
       if (response.ok) {
@@ -30,7 +30,7 @@ const StartStopButton: React.FC = () => {
   const handleStop = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://172.105.252.53/stop', {
+      const response = await fetch('https://www.kashishindiapvtltd.com/stop', {
         method: 'GET',
       });
       if (response.ok) {

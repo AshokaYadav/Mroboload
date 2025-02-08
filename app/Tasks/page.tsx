@@ -1,4 +1,8 @@
 'use client'
+import AmountInput from '@/components/Task/AmountInput';
+import BalanceFilter from '@/components/Task/BalanceFilter';
+import TableComponent from '@/components/Task/LapulistTable';
+import RangeSelector from '@/components/Task/RangeSelector';
 import React, { useState, useEffect } from 'react';
 
 interface LapulistItem {
@@ -30,6 +34,9 @@ const LapulistTable: React.FC = () => {
   const [rangeStart, setRangeStart] = useState<number>(0);
   const [rangeEnd, setRangeEnd] = useState<number>(0);
   const [totalBalance, setTotalBalance] = useState(0);
+  // const [filterBalance,setFilterBalance]=useState('');
+  const [filterBalance, setFilterBalance] = useState<string>('');
+  const [filteredLapulist, setFilteredLapulist] = useState<any[]>([]); // To hold filtered data
   
 
   const postSelectedData = async () => {
@@ -37,7 +44,7 @@ const LapulistTable: React.FC = () => {
 
     if(!amount) alert('dhruv bhai enter first amount...');
 
-    
+
 
     const updatedItems = selectedItems.map(item => {
       return {
@@ -47,7 +54,7 @@ const LapulistTable: React.FC = () => {
   });
     
     try {
-      const response = await fetch('http://172.105.252.53/api/tasks', {
+      const response = await fetch('https://www.kashishindiapvtltd.com/api/tasks', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -68,7 +75,7 @@ const LapulistTable: React.FC = () => {
 
   const fetchLapulist = async () => {
     try {
-      const response = await fetch('http://172.105.252.53/api/lapu');
+      const response = await fetch('https://www.kashishindiapvtltd.com/api/lapu');
       if (!response.ok) {
         throw new Error('Failed to fetch lapulist data');
       }
@@ -80,7 +87,7 @@ const LapulistTable: React.FC = () => {
         const balanceValue = parseFloat(
           item.balance.replace('₹', '').replace(/,/g, '').trim()
         ); // Replace commas and trim any whitespace
-        console.log(balanceValue);
+        // console.log(balanceValue);
         return acc + balanceValue;
       }, 0);
 
@@ -174,6 +181,27 @@ const LapulistTable: React.FC = () => {
     
     setSelectedItems(rangeSelectedItems);
   };
+
+const handleBalanceFilterChange = () => {
+  const filterValue = Number(filterBalance); // Convert the filter input to a number
+
+  // Check if the filter value is a valid number
+  if (isNaN(filterValue)) {
+    alert('Please enter a valid number');
+    return;
+  }
+
+  // Filter the lapulist based on totalBalance
+  const filtered = lapulist.filter((item) => {
+    const itemBalance = item.totalBalance // Convert totalBalance to number
+    return Number(itemBalance) === filterValue; // Compare as numbers
+  });
+
+  console.log(filtered);
+  // setFilteredLapulist(filtered); // Set the filtered lapulist
+  setLapulist(filtered);
+};
+
   
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,6 +211,10 @@ const LapulistTable: React.FC = () => {
   // const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setFilterDate(e.target.value);
   // };
+
+  useEffect(()=>{
+    console.log(filterBalance)
+  },[filterBalance])
 
 
 
@@ -214,110 +246,50 @@ const LapulistTable: React.FC = () => {
        
          {/* Select All Checkbox */}
       <div className="flex justify-between">
+        <RangeSelector
+          rangeStart={rangeStart}
+          rangeEnd={rangeEnd}
+          setRangeStart={setRangeStart}
+          setRangeEnd={setRangeEnd}
+          handleRangeChange={handleRangeChange}
+        />
 
-        <input
-          type="number"
-          placeholder="Start Index"
-          value={rangeStart}
-          onChange={(e) => setRangeStart(Number(e.target.value))}
-          className="p-2 border border-gray-300 rounded-md w-40"
+        <BalanceFilter
+          filterBalance={filterBalance}
+          setFilterBalance={setFilterBalance}
+          handleBalanceFilterChange={handleBalanceFilterChange}
         />
-        <input
-          type="number"
-          placeholder="End Index"
-          value={rangeEnd}
-          onChange={(e) => setRangeEnd(Number(e.target.value))}
-          className="p-2 border border-gray-300 rounded-md ml-2 w-40"
-        />
-        <button
-          onClick={handleRangeChange}
-          className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 ml-4 "
-        >
-          Select Range
-        </button>
 
       </div>
 
-      <div>
-        <input
-          className="p-2 border border-gray-300 rounded-md"
-          placeholder="Enter Amount"
-          value={amount}
-          onChange={handleChange}
-        />
-        <button
-          onClick={postSelectedData}
-          className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ml-4"
-        >
-          Submit
-        </button>
+      
 
-        </div>
+     <AmountInput
+        amount={amount}
+        handleChange={handleChange}
+        postSelectedData={postSelectedData}
+      />
+
 
 
       </div>
-      {/* <div className="flex flex-col items-start w-40 m-2 ">
-          <input
-            id="date-picker"
-            type="date"
-            // value={filterDate}
-            // onChange={handleDateChange}
-            className="p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300"
-          />
-  </div> */}
+
 
      
+  <TableComponent
+        lapulist={lapulist}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        selectAll={selectAll}
+        handleSelectChange={handleSelectChange}
+        currentLoggedInd={currentLoggedInd}
+        amount={amount}
+        handleSelectAllChange={handleSelectAllChange}
+      />
 
-      <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-md rounded-lg">
-        <thead className="bg-gradient-to-r from-blue-500 to-teal-500 text-white">
-          <tr>
-            <th className="py-3 px-6 text-center">Select
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAllChange}
-            className="form-checkbox text-blue-500 mx-2 my-2"
-          />
+
+
       
-            </th>
-            <th className="py-3 px-6 text-center">ID</th>
-            <th className="py-3 px-6 text-center">Lapu ID</th>
-            <th className="py-3 px-6 text-center">Balance</th>
-            <th className="py-3 px-6 text-center">User ID</th>
-            <th className="py-3 px-6 text-center">Total Balance</th>
-            <th className="py-3 px-6 text-center">Status</th>
-            <th className="py-3 px-6 text-center">Lapu No</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white">
-          {lapulist.map((item) => (
-            <tr key={item.id} className="hover:bg-gray-100 transition duration-200">
-              <td className="py-3 px-6 text-center border-b">
-                <input
-                  type="checkbox"
-                  checked={selectedItems.some(selectedItem => selectedItem.lapu_id === item.lapu_id)}
-                  onChange={() => handleSelectChange(item.lapu_id, amount, currentLoggedInd)}
-                  className="form-checkbox text-blue-500"
-                  disabled={item.status === 'OFF' || item.totalBalance == '5000'}
-                />
-              </td>
-              <td className="py-3 px-6 text-center border-b">{item.id}</td>
-              <td className="py-3 px-6 text-center border-b">{item.lapu_id}</td>
-              <td className="py-3 px-6 text-center border-b">{item.balance}</td>
-              <td className="py-3 px-6 text-center border-b">{item.user_id.slice(0, 10)}</td>
-              <td className="py-3 px-6 text-center border-b">{item.totalBalance}</td>
-              <td className="py-3 px-6 text-center border-b">
-                <span
-                  className={`px-3 py-1 rounded-full ${item.status === 'ON' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
-                >
-                  {item.status}
-                </span>
-              </td>
-              <td className="py-3 px-6 text-center border-b">{item.Lapu_No.slice(0, 10)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 };
