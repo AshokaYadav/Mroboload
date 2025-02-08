@@ -32,7 +32,7 @@ interface TableComponentProps {
 const TableComponent: React.FC<TableComponentProps> = ({
   lapulist,
   selectedItems,
-  setSelectedItems,
+  // setSelectedItems,
   selectAll,
   handleSelectChange,
   currentLoggedInd,

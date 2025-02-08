@@ -16,7 +16,7 @@ const AmountInput: React.FC<AmountInputProps> = ({
   return (
     <div className="flex items-center space-x-4">
       <input
-        className="p-2 border border-gray-300 rounded-md"
+        className="p-2 border border-gray-300 rounded-md ml-2"
         placeholder="Enter Amount"
         value={amount}
         onChange={handleChange}

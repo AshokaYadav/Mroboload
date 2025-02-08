@@ -11,7 +11,7 @@ interface BalanceFilterProps {
 const BalanceFilter: React.FC<BalanceFilterProps> = ({
   filterBalance,
   setFilterBalance,
-  handleBalanceFilterChange,
+  // handleBalanceFilterChange,
 }) => {
   return (
     <div className="flex items-center space-x-4">
@@ -20,14 +20,14 @@ const BalanceFilter: React.FC<BalanceFilterProps> = ({
         placeholder="Enter Balance"
         value={filterBalance}
         onChange={(e) => setFilterBalance(e.target.value)} // Updates filter value
-        className="p-2 border border-gray-300 rounded-md"
+        className="p-2 border border-gray-300 rounded-md ml-2"
       />
-      <button
+      {/* <button
         onClick={handleBalanceFilterChange}
         className="p-2 bg-blue-500 text-white rounded-md"
       >
         Submit
-      </button>
+      </button> */}
     </div>
   );
 };

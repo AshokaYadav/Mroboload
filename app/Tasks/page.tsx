@@ -36,7 +36,7 @@ const LapulistTable: React.FC = () => {
   const [totalBalance, setTotalBalance] = useState(0);
   // const [filterBalance,setFilterBalance]=useState('');
   const [filterBalance, setFilterBalance] = useState<string>('');
-  const [filteredLapulist, setFilteredLapulist] = useState<any[]>([]); // To hold filtered data
+  // const [filteredLapulist, setFilteredLapulist] = useState<any[]>([]); // To hold filtered data
   
 
   const postSelectedData = async () => {
@@ -72,6 +72,15 @@ const LapulistTable: React.FC = () => {
       setError('Failed to post data');
     }
   };
+
+  useEffect(() => {
+    if (filterBalance) {
+      handleBalanceFilterChange();
+    } else {
+      // If no filter value, reset to the full lapulist
+      fetchLapulist();
+    }
+  }, [filterBalance]);
 
   const fetchLapulist = async () => {
     try {
@@ -264,11 +273,11 @@ const handleBalanceFilterChange = () => {
 
       
 
-     <AmountInput
-        amount={amount}
-        handleChange={handleChange}
-        postSelectedData={postSelectedData}
-      />
+      <AmountInput
+          amount={amount}
+          handleChange={handleChange}
+          postSelectedData={postSelectedData}
+        />
 
 
 
