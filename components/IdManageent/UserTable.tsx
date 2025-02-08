@@ -79,11 +79,11 @@ const UserTable: React.FC<UserTableProps> = ({
 
                 
                 <button
-                  onClick={() => onDeleteClick(user.id)}
+                  onClick={currentLoggedInd === user.loginId ? ()=>{} : () => onDeleteClick(user.id)}
                   className={`px-4 py-1 rounded-full ml-2 w-24 text-white
                     ${currentLoggedInd === user.loginId ? 'bg-red-500 cursor-not-allowed opacity-50' : 'bg-red-500'}`
                   }
-                  disabled={currentLoggedInd !== user.loginId} // Disable the button if condition is met
+                  disabled={currentLoggedInd === user.loginId} // Disable the button if condition is met
                 >
                   Delete
                 </button>

@@ -75,7 +75,7 @@ const FormComponent = () => {
   const handleDeleteClick = async (id: number) => {
     console.log(`Delete clicked for user with ID: ${id}`);
     try {
-      const response = await fetch(`https://www.kashishindiapvtltd.com/api/user/${id}`, {
+      const response = await fetch(`https://www.kashishindiapvtltd.com/api/get/${id}`, {
         method: 'DELETE',
       });
 
