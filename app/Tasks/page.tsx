@@ -73,14 +73,14 @@ const LapulistTable: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (filterBalance) {
-      handleBalanceFilterChange();
-    } else {
-      // If no filter value, reset to the full lapulist
-      fetchLapulist();
-    }
-  }, [filterBalance]);
+  // useEffect(() => {
+  //   if (filterBalance) {
+  //     handleBalanceFilterChange();
+  //   } else {
+  //     // If no filter value, reset to the full lapulist
+  //     fetchLapulist();
+  //   }
+  // }, [filterBalance]);
 
   const fetchLapulist = async () => {
     try {
@@ -89,6 +89,7 @@ const LapulistTable: React.FC = () => {
         throw new Error('Failed to fetch lapulist data');
       }
       const data = await response.json();
+      //here i want you change the totalBalance value 100 ,500,1000 pattren me dal do 
       setLapulist(data);
   
       const sum = data.reduce((acc: number, item: LapulistItem) => {
@@ -191,6 +192,17 @@ const LapulistTable: React.FC = () => {
     setSelectedItems(rangeSelectedItems);
   };
 
+
+
+
+
+
+
+
+
+
+
+
 const handleBalanceFilterChange = () => {
   const filterValue = Number(filterBalance); // Convert the filter input to a number
 
@@ -212,6 +224,16 @@ const handleBalanceFilterChange = () => {
 };
 
   
+
+
+
+
+
+
+
+
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
@@ -263,11 +285,21 @@ const handleBalanceFilterChange = () => {
           handleRangeChange={handleRangeChange}
         />
 
-        <BalanceFilter
-          filterBalance={filterBalance}
-          setFilterBalance={setFilterBalance}
-          handleBalanceFilterChange={handleBalanceFilterChange}
-        />
+<div className="flex items-center space-x-4">
+      <input
+        type="text"
+        placeholder="Enter Balance"
+        value={filterBalance}
+        onChange={(e) => setFilterBalance(e.target.value)} // Updates filter value
+        className="p-2 border border-gray-300 rounded-md ml-2"
+      />
+      <button
+        onClick={handleBalanceFilterChange}
+        className="p-2 bg-blue-500 text-white rounded-md"
+      >
+        Submit
+      </button>
+    </div>
 
       </div>
 
