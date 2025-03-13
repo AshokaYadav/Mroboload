@@ -32,7 +32,7 @@ export default function Home() {
   //   setInterval(() => {
   //     console.log('Fetching data...');
   //     fetchData();
-  //   }, 10000);
+  //   }, 30000);
     
   //   fetchData();
   // }, []);
@@ -40,7 +40,7 @@ export default function Home() {
     const interval = setInterval(() => {
       console.log('Fetching data...');
       fetchData();
-    }, 10000);
+    }, 30000);
   
     fetchData(); // First fetch immediately
   
