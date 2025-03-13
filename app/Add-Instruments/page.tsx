@@ -28,9 +28,25 @@ export default function Home() {
     }
   }
 
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     console.log('Fetching data...');
+  //     fetchData();
+  //   }, 10000);
+    
+  //   fetchData();
+  // }, []);
   useEffect(() => {
-    fetchData();
+    const interval = setInterval(() => {
+      console.log('Fetching data...');
+      fetchData();
+    }, 10000);
+  
+    fetchData(); // First fetch immediately
+  
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
