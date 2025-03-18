@@ -40,7 +40,7 @@ export default function Home() {
     const interval = setInterval(() => {
       console.log('Fetching data...');
       fetchData();
-    }, 30000);
+    }, 10000);
   
     fetchData(); // First fetch immediately
   
